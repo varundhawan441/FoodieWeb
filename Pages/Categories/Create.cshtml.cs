@@ -6,15 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FoodieWeb.Pages.Categories
 {
-//	[BindProperties]
-	public class CreateModel : PageModel
+    //	[BindProperties]
+    public class CreateModel : PageModel
     {
-        
+
         public Category Category { get; set; }
         private readonly ApplicationDbContext dbContext;
         public CreateModel(ApplicationDbContext context)
         {
-            dbContext= context;
+            dbContext = context;
         }
         public void OnGet()
         {
@@ -22,9 +22,17 @@ namespace FoodieWeb.Pages.Categories
 
         public async Task<IActionResult> OnPost(Category category)
         {
-            await dbContext.Categories.AddAsync(category);
-            await dbContext.SaveChangesAsync();
-            return RedirectToPage("Index");
+            if(category.Name == category.DisplayOrder.ToString())
+            {
+                ModelState.AddModelError(string.Empty, "The DisplayOrder cannot exactly match the Name.");
+            }
+            if (ModelState.IsValid)
+            {
+                await dbContext.Categories.AddAsync(category);
+                await dbContext.SaveChangesAsync();
+                return RedirectToPage("Index");
+            }
+            return Page();
         }
     }
 }

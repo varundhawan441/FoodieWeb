@@ -7,18 +7,28 @@ using Microsoft.EntityFrameworkCore;
 namespace FoodieWeb.Pages.Categories
 {
     //	[BindProperties]
-    public class CreateModel : PageModel
+    public class EditModel : PageModel
     {
 
         public Category Category { get; set; }
         private readonly ApplicationDbContext dbContext;
-        public CreateModel(ApplicationDbContext context)
+        public EditModel(ApplicationDbContext context)
         {
             dbContext = context;
         }
-        public void OnGet()
+        public IActionResult OnGet(int id)
         {
-        }
+			var category = dbContext.Categories.FirstOrDefault(c => c.Id == id);
+            if(category != null)
+            {
+                Category = category;
+            }
+            else
+            {
+                return RedirectToPage("Index");
+            }
+            return Page();
+		}
 
         public async Task<IActionResult> OnPost(Category category)
         {
@@ -28,9 +38,9 @@ namespace FoodieWeb.Pages.Categories
             }
             if (ModelState.IsValid)
             {
-                await dbContext.Categories.AddAsync(category);
+                dbContext.Categories.Update(category);
                 await dbContext.SaveChangesAsync();
-                TempData["success"] = "Category created sucessfully";
+                TempData["success"] = "Category updated sucessfully";
                 return RedirectToPage("Index");
             }
             return Page();

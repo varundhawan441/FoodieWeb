@@ -1,9 +1,8 @@
-using FoodieWeb.Data;
-using FoodieWeb.Models;
-using Microsoft.AspNetCore.Mvc;
+using Foodie.DataAccess.Data;
+using Foodie.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FoodieWeb.Views.Categories
+namespace FoodieWeb.Pages.Admin.Categories
 {
     public class IndexModel : PageModel
     {

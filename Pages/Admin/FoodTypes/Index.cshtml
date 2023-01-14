@@ -1,13 +1,13 @@
 ﻿@page
-@model FoodieWeb.Views.Categories.IndexModel
+@model FoodieWeb.Pages.Admin.FoodTypes.IndexModel
 <div class="container p-3">
 	<div class="row pt-4">
 		<div class="col-6">
-			<h2 class="text-primary">Category List</h2>
+			<h2 class="text-primary">Food Type List</h2>
 		</div>
 		<div class="col-6 text-end">
 			<a asp-page="create" class="btn btn-primary">
-				<i class="bi bi-plus-square"></i> &nbsp;Create New Category
+				<i class="bi bi-plus-square"></i> &nbsp;Create New Food type
 			</a>
 		</div>
 	</div>
@@ -18,10 +18,7 @@
 		<thead>
 			<tr>
 				<th>
-					Category Name
-				</th>
-				<th>
-					Display Order
+					Food Type
 				</th>
 				<th></th>
 			</tr>
@@ -30,8 +27,7 @@
 			@foreach (var obj in Model.categories)
 			{
 				<tr>
-					<td width="50%">@obj.Name</td>
-					<td width="30%">@obj.DisplayOrder</td>
+					<td width="100%">@obj.Name</td>
 					<td>
 						<div class="w-75 btn-group" role="group">
 							<a asp-page="Edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2">

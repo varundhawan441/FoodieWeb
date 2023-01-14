@@ -20,14 +20,19 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                            
                             <a is-active-route class="nav-link" asp-page="/Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a is-active-route class="nav-link" asp-page="/Categories/Index">Category</a>
+                         <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                          <div class="dropdown-menu">
+                                <a is-active-route class="dropdown-item" asp-page="/Admin/Categories/Index">Category</a>
+                                <a is-active-route class="dropdown-item" asp-page="/Admin/FoodTypes/Index">Food Type</a>
+                            <div class="dropdown-divider"></div>
+                          </div>
                         </li>
                     </ul>
                 </div>

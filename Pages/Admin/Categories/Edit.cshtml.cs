@@ -1,10 +1,9 @@
-using FoodieWeb.Data;
-using FoodieWeb.Models;
+using Foodie.DataAccess.Data;
+using Foodie.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
-namespace FoodieWeb.Pages.Categories
+namespace FoodieWeb.Pages.Admin.Categories
 {
     //	[BindProperties]
     public class EditModel : PageModel

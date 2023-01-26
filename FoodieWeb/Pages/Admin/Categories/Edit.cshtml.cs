@@ -1,4 +1,5 @@
 using Foodie.DataAccess.Data;
+using Foodie.DataAccess.Repository.IRepository;
 using Foodie.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,18 +10,19 @@ namespace FoodieWeb.Pages.Admin.Categories
     public class EditModel : PageModel
     {
 
-        public Category Category { get; set; }
-        private readonly ApplicationDbContext dbContext;
-        public EditModel(ApplicationDbContext context)
+		private readonly IUnitOfWork unitOfWork;
+		public Category Category { get; set; }
+		public EditModel(IUnitOfWork unit)
+		{
+			unitOfWork = unit;
+		}
+
+		public IActionResult OnGet(int id)
         {
-            dbContext = context;
-        }
-        public IActionResult OnGet(int id)
-        {
-			var category = dbContext.Categories.FirstOrDefault(c => c.Id == id);
+			var category = unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
             if(category != null)
             {
-                Category = category;
+				Category = category;
             }
             else
             {
@@ -37,8 +39,8 @@ namespace FoodieWeb.Pages.Admin.Categories
             }
             if (ModelState.IsValid)
             {
-                dbContext.Categories.Update(category);
-                await dbContext.SaveChangesAsync();
+                unitOfWork.Category.UpdateCategoryName(category);
+                unitOfWork.Save();
                 TempData["success"] = "Category updated sucessfully";
                 return RedirectToPage("Index");
             }

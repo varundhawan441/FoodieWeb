@@ -1,4 +1,5 @@
 using Foodie.DataAccess.Data;
+using Foodie.DataAccess.Repository.IRepository;
 using Foodie.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,13 +10,13 @@ namespace FoodieWeb.Pages.Admin.Categories
     public class CreateModel : PageModel
     {
 
-        public Category Category { get; set; }
-        private readonly ApplicationDbContext dbContext;
-        public CreateModel(ApplicationDbContext context)
-        {
-            dbContext = context;
-        }
-        public void OnGet()
+		private readonly IUnitOfWork unitOfWork;
+		public Category Category { get; set; }
+		public CreateModel(IUnitOfWork unit)
+		{
+			unitOfWork = unit;
+		}
+		public void OnGet()
         {
         }
 
@@ -27,8 +28,8 @@ namespace FoodieWeb.Pages.Admin.Categories
             }
             if (ModelState.IsValid)
             {
-                await dbContext.Categories.AddAsync(category);
-                await dbContext.SaveChangesAsync();
+                unitOfWork.Category.Add(category);
+                unitOfWork.Save();
                 TempData["success"] = "Category created sucessfully";
                 return RedirectToPage("Index");
             }

@@ -1,4 +1,5 @@
 using Foodie.DataAccess.Data;
+using Foodie.DataAccess.Repository.IRepository;
 using Foodie.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,15 +11,15 @@ namespace FoodieWeb.Pages.Admin.Categories
     public class DeleteModel : PageModel
     {
 
-        public Category Category { get; set; }
-        private readonly ApplicationDbContext dbContext;
-        public DeleteModel(ApplicationDbContext context)
+		private readonly IUnitOfWork unitOfWork;
+		public Category Category { get; set; }
+		public DeleteModel(IUnitOfWork unit)
+		{
+			unitOfWork = unit;
+		}
+		public IActionResult OnGet(int id)
         {
-            dbContext = context;
-        }
-        public IActionResult OnGet(int id)
-        {
-			var category = dbContext.Categories.FirstOrDefault(c => c.Id == id);
+			var category = unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
 			if (category != null)
 			{
 				Category = category;
@@ -32,11 +33,11 @@ namespace FoodieWeb.Pages.Admin.Categories
 
         public async Task<IActionResult> OnPost(Category _category)
         {
-            var category = await dbContext.Categories.FirstOrDefaultAsync(x => x.Id == _category.Id);
+            var category = unitOfWork.Category.GetFirstOrDefault(x => x.Id == _category.Id);
             if (category != null)
             {
-                dbContext.Categories.Remove(category);
-                await dbContext.SaveChangesAsync();
+				unitOfWork.Category.Remove(category);
+				unitOfWork.Save();
                 TempData["success"] = "Category deleted sucessfully";
                 return RedirectToPage("Index");
             }

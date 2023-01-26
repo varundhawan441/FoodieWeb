@@ -1,4 +1,5 @@
 using Foodie.DataAccess.Data;
+using Foodie.DataAccess.Repository.IRepository;
 using Foodie.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -6,16 +7,16 @@ namespace FoodieWeb.Pages.Admin.Categories
 {
     public class IndexModel : PageModel
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly IUnitOfWork unitOfWork;
         public IEnumerable<Category> categories;
-        public IndexModel(ApplicationDbContext dbContext)
+        public IndexModel(IUnitOfWork unit)
         {
-            this.dbContext = dbContext;
+            unitOfWork = unit;
         }
 
         public void OnGet()
         {
-            categories = dbContext.Categories.ToList();
+            categories = unitOfWork.Category.GetAll();
         }
     }
 }

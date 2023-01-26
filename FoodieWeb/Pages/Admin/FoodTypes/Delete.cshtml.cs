@@ -1,4 +1,5 @@
 using Foodie.DataAccess.Data;
+using Foodie.DataAccess.Repository.IRepository;
 using Foodie.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,14 +12,14 @@ namespace FoodieWeb.Pages.Admin.FoodTypes
     {
 
         public FoodType FoodType { get; set; }
-        private readonly ApplicationDbContext dbContext;
-        public DeleteModel(ApplicationDbContext context)
+		private readonly IUnitOfWork dbContext;
+		public DeleteModel(IUnitOfWork context)
         {
             dbContext = context;
         }
         public IActionResult OnGet(int id)
         {
-			var foodtype = dbContext.FoodTypes.FirstOrDefault(c => c.Id == id);
+			var foodtype = dbContext.FoodTypes.GetFirstOrDefault(c => c.Id == id);
 			if (foodtype != null)
 			{
 				FoodType = foodtype;
@@ -32,11 +33,11 @@ namespace FoodieWeb.Pages.Admin.FoodTypes
 
         public async Task<IActionResult> OnPost(FoodType foodType)
         {
-            var _foodType = await dbContext.FoodTypes.FirstOrDefaultAsync(x => x.Id == foodType.Id);
+            var _foodType = dbContext.FoodTypes.GetFirstOrDefault(x => x.Id == foodType.Id);
             if (_foodType != null)
             {
                 dbContext.FoodTypes.Remove(_foodType);
-                await dbContext.SaveChangesAsync();
+                dbContext.Save();
                 TempData["success"] = "Food type deleted sucessfully";
                 return RedirectToPage("Index");
             }

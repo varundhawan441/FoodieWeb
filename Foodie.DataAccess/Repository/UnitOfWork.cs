@@ -16,9 +16,12 @@ namespace Foodie.DataAccess.Repository
 			_context= context;
 			Category = new CategoryRepository(context);
 			FoodTypes = new FoodTypesRepository(context);
+			MenuItems = new MenuItemsRepository(context);
 		}
 		public CategoryRepository Category { get; private set; }
 		public FoodTypesRepository FoodTypes { get; private set; }
+
+		public MenuItemsRepository MenuItems { get; private set; }
 
 		public void Save()
 		{

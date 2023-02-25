@@ -11,15 +11,15 @@ namespace Foodie.DataAccess.Repository
 {
 	public class CategoryRepository : Repository<Category>, ICategoryRepository
 	{
-		ApplicationDbContext db = null;
+		ApplicationDbContext context = null;
 		public CategoryRepository(ApplicationDbContext db) : base(db)
 		{
-			this.db = db;
+			context = db;
 		}
 
 		public void UpdateCategoryName(Category category)
 		{
-			var obj = db.Categories.FirstOrDefault(x => x.Id == category.Id);
+			var obj = context.Category.FirstOrDefault(x => x.Id == category.Id);
 			if (obj != null)
 			{
 				obj.Name = category.Name;

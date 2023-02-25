@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Foodie.DataAccess\Foodie.DataAccess.csproj" />
+    <ProjectReference Include="..\Foodie.Utilities\Foodie.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,11 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using Foodie.Models;
+using Foodie.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -30,13 +32,15 @@ namespace FoodieWeb.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +48,7 @@ namespace FoodieWeb.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -126,11 +131,40 @@ namespace FoodieWeb.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.PhoneNumber = Input.PhoneNumber;
-
+                if (!await _roleManager.RoleExistsAsync(FoodConstants.KitchenRole))
+                {
+                    _roleManager.CreateAsync(new IdentityRole(FoodConstants.ManagerRole)).GetAwaiter().GetResult();
+                    _roleManager.CreateAsync(new IdentityRole(FoodConstants.KitchenRole)).GetAwaiter().GetResult();
+                    _roleManager.CreateAsync(new IdentityRole(FoodConstants.FrontDeskRole)).GetAwaiter().GetResult();
+                    _roleManager.CreateAsync(new IdentityRole(FoodConstants.CustomerRole)).GetAwaiter().GetResult();
+                }
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
+                    var userRole = Request.Form["rdUserRole"].ToString();
+                    if (userRole == FoodConstants.ManagerRole)
+                    {
+                        await _userManager.AddToRoleAsync(user, FoodConstants.ManagerRole);
+                    }
+                    else
+                    {
+                        if (userRole == FoodConstants.FrontDeskRole)
+                        {
+                            await _userManager.AddToRoleAsync(user, FoodConstants.FrontDeskRole);
+                        }
+                        else
+                        {
+                            if (userRole == FoodConstants.KitchenRole)
+                            {
+                                await _userManager.AddToRoleAsync(user, FoodConstants.KitchenRole);
+                            }
+                            else
+                            {
+                                await _userManager.AddToRoleAsync(user, FoodConstants.CustomerRole);
+                            }
+                        }
+                    }
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);

@@ -5,11 +5,11 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodieWeb", "FoodieWeb.csproj", "{2896CAA0-B674-4476-A574-73DD3D04751B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foodie.Models", "..\Foodie.Models\Foodie.Models.csproj", "{C3E0835E-4620-4939-8064-EEA12A2F0780}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodie.Models", "..\Foodie.Models\Foodie.Models.csproj", "{C3E0835E-4620-4939-8064-EEA12A2F0780}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foodie.DataAccess", "..\Foodie.DataAccess\Foodie.DataAccess.csproj", "{8A02196C-35B1-4233-8DF3-C9B6F03D9119}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodie.DataAccess", "..\Foodie.DataAccess\Foodie.DataAccess.csproj", "{8A02196C-35B1-4233-8DF3-C9B6F03D9119}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foodie.Utilities", "..\Foodie.Utilities\Foodie.Utilities.csproj", "{FE15044A-8089-417D-BE22-1A40C2DECF99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodie.Utilities", "..\Foodie.Utilities\Foodie.Utilities.csproj", "{FE15044A-8089-417D-BE22-1A40C2DECF99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

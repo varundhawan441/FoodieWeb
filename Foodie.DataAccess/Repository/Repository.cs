@@ -25,9 +25,15 @@ namespace Foodie.DataAccess.Repository
 			dbContext.Add(item);
 		}
 
-		public IEnumerable<T> GetAll(string? includeProperties = null)
+		public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null, 
+			string ? includeProperties = null, 
+			Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null)
 		{
             IQueryable<T> query = set;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
             if (includeProperties != null)
             {
                 //abc,,xyz -> abc xyz
@@ -37,17 +43,30 @@ namespace Foodie.DataAccess.Repository
                     query = query.Include(includeProperty);
                 }
             }
-			return query.ToList();
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            return query.ToList();
 		}
 
-		public T GetFirstOrDefault(Expression<Func<T, bool>> filter = null)
+		public T GetFirstOrDefault(Expression<Func<T, bool>> filter = null, string? includeProperties = null)
 		{
-			IQueryable<T> queryable = set;
+			IQueryable<T> query = set;
 			if(filter != null)
 			{
-				queryable = queryable.Where(filter);
+				query = query.Where(filter);
 			}
-			return queryable.FirstOrDefault();
+            if (includeProperties != null)
+            {
+                //abc,,xyz -> abc xyz
+                foreach (var includeProperty in includeProperties.Split(
+                    new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+            return query.FirstOrDefault();
 		}
 
 		public void Update(T item)

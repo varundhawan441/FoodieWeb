@@ -16,7 +16,7 @@ namespace FoodieWeb.Pages.Admin.MenuItems
 
         public void OnGet()
         {
-            menuItems = dbContext.MenuItems.GetAll();
+         //   menuItems = dbContext.MenuItems.GetAll();
         }
     }
 }

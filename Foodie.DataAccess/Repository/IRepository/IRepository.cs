@@ -11,8 +11,10 @@ namespace Foodie.DataAccess.Repository.IRepository
 	{
 		// Get All, Get firstordefault, Add, Remove, Update, Remove Range
 
-		IEnumerable<T> GetAll(string? includeProperties = null);
-		T GetFirstOrDefault(Expression<Func<T, bool>> filter = null);
+		IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null, string ? 
+			includeProperties = null, 
+			Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null);
+		T GetFirstOrDefault(Expression<Func<T, bool>> filter = null, string? includeProperties = null);
 		void Add(T item);
 		void Update(T item);
 		void Remove(T item);

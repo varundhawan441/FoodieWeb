@@ -17,11 +17,13 @@ namespace Foodie.DataAccess.Repository
 			Category = new CategoryRepository(context);
 			FoodTypes = new FoodTypesRepository(context);
 			MenuItems = new MenuItemsRepository(context);
+			ShoppingCart = new ShoppingCartRepository(context);
 		}
 		public CategoryRepository Category { get; private set; }
 		public FoodTypesRepository FoodTypes { get; private set; }
 
 		public MenuItemsRepository MenuItems { get; private set; }
+		public ShoppingCartRepository ShoppingCart { get; private set; }
 
 		public void Save()
 		{

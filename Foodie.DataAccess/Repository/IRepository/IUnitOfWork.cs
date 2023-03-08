@@ -11,6 +11,7 @@ namespace Foodie.DataAccess.Repository.IRepository
 		CategoryRepository Category { get; }
 		FoodTypesRepository FoodTypes { get; }
 		MenuItemsRepository MenuItems { get; }
+		ShoppingCartRepository ShoppingCart { get; }
 		void Save();
 		void Dispose();
 	}
